@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+
 //<summary>
 //Ball movement controlls and simple third-person-style camera
 //</summary>
@@ -16,12 +17,14 @@ public class RollerBall : MonoBehaviour {
 	private AudioSource mAudioSource = null;
 	private bool mFloorTouched = false;
 	public int points = 0;
+	
 
 	void Start () {
 		mRigidBody = GetComponent<Rigidbody> ();
 		mAudioSource = GetComponent<AudioSource> ();
+		
 	}
-
+// Esto es para el movimiento de axis con el acelerometro
 	void FixedUpdate () {
 		if (mRigidBody != null) {
 			if (Input.GetButton ("Horizontal")) {
@@ -37,7 +40,7 @@ public class RollerBall : MonoBehaviour {
 				mRigidBody.AddForce(Vector3.up*200);
 			}
 		}
-		if (points == 1	){
+		if (points == 4){
 			Debug.Log("Te mamaste");
 			SceneManager.LoadScene("WIN");
 		}
@@ -53,7 +56,7 @@ public class RollerBall : MonoBehaviour {
 			ViewCamera.transform.LookAt(transform.position);
 		}
 	}
-
+//Cuando tenga una colision con el piso este en colision con la pelota este hace ruidos dependiendo de la velocidad y la maginitud de su movimiento
 	void OnCollisionEnter(Collision coll){
 		if (coll.gameObject.tag.Equals ("Floor")) {
 			mFloorTouched = true;
@@ -66,13 +69,13 @@ public class RollerBall : MonoBehaviour {
 			}
 		}
 	}
-
+// esto es para los triggers de la pelota
 	void OnCollisionExit(Collision coll){
 		if (coll.gameObject.tag.Equals ("Floor")) {
 			mFloorTouched = false;
 		}
 	}
-
+//evento de colision con la moneda y agrega puntos
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag.Equals ("Coin")) {
 			if(mAudioSource != null && CoinSound != null){
